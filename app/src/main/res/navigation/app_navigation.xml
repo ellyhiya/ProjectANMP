@@ -2,12 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/app_navigation"
+    android:id="@+id/hostFragment"
     app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.projectanmp.LoginFragment"
+        android:name="com.example.projectanmp.view.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.example.projectanmp.DashboardFragment"
+        android:name="com.example.projectanmp.view.DashboardFragment"
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/newHabitFragment"
-        android:name="com.example.projectanmp.NewHabitFragment"
+        android:name="com.example.projectanmp.view.NewHabitFragment"
         android:label="fragment_new_habit"
         tools:layout="@layout/fragment_new_habit" />
 </navigation>

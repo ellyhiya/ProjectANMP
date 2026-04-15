@@ -1,12 +1,11 @@
-package com.example.projectanmp
+package com.example.projectanmp.view
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.projectanmp.R
 import com.example.projectanmp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +14,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(binding.root)
+
+        navController = (supportFragmentManager.findFragmentById(R.id.hostFragment) as NavHostFragment).navController
     }
 }
