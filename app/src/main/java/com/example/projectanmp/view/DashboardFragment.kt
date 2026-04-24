@@ -41,6 +41,9 @@ class DashboardFragment : Fragment() {
         viewModel.habitLD.observe(viewLifecycleOwner, Observer {
             habitListAdapter.updateList(it)
         })
-
+    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.refresh()
     }
 }

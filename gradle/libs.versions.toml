@@ -17,6 +17,8 @@ coroutines = "1.10.2"
 swiperefreshlayout = "1.1.0"
 fragment = "1.8.9"
 gson = "2.10.1"
+firebaseCrashlyticsBuildtools = "3.0.7"
+volley = "1.2.1"
 
 
 [libraries]
@@ -37,6 +39,8 @@ coroutinesCore = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-c
 swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "swiperefreshlayout" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

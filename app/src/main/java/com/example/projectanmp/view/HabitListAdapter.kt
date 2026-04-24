@@ -28,14 +28,14 @@ class HabitListAdapter(val habitList:ArrayList<Habit>)
         position: Int
     ) {
         var progress = habitList[position].progress.toString() + "/" + habitList[position].limit.toString() + " " + habitList[position].unit
-        var percentage = habitList[position].progress / habitList[position].limit
+        var percentage = (habitList[position].progress*100) / habitList[position].limit
 
         with(holder.binding){
             txtHabitName.text = habitList[position].name
             txtHabitDesc.text = habitList[position].description
             chipStatus.text = habitList[position].status
             txtProgress.text = progress
-            progressBar.setProgress(percentage)
+            progressBar.progress=percentage
             btnAdd.setOnClickListener {
                 // To do
             }
