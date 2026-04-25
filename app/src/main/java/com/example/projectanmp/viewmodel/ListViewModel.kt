@@ -2,13 +2,16 @@ package com.example.projectanmp.viewmodel
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.volley.RequestQueue
+import androidx.lifecycle.application
+import androidx.navigation.findNavController
 import com.example.projectanmp.model.Habit
 import com.example.projectanmp.util.FileHelper
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
+import com.example.projectanmp.view.NewHabitFragmentDirections
+import com.google.gson.reflect.TypeToken
 import com.google.gson.Gson
 
 class ListViewModel(application: Application):
@@ -17,29 +20,42 @@ class ListViewModel(application: Application):
     val habitLD = MutableLiveData<ArrayList<Habit>>()
     val habitLoadErrorLD = MutableLiveData<Boolean>()
     val loadingLD = MutableLiveData<Boolean>()
-    val TAG = "volleyTag"
-    private var queue: RequestQueue? = null
+    val fileHelper = FileHelper(getApplication())
     fun refresh() {
         loadingLD.value = true
         habitLoadErrorLD.value = false
 
-        val fileHelper = FileHelper(getApplication())
-        val sType = object : TypeToken<List<Habit>>() { }.type
-        val habitData = Gson().fromJson<List<Habit>>(fileHelper.readFromFile(), sType)
-
-        habitLD.value = habitData as ArrayList<Habit>?
-//        habitLD.value = arrayListOf(
-//            Habit(1, "Test 1", "Description 1", "Placeholder 1", 2, "Tests", 10, "a"),
-//            Habit(2, "Test 2", "Description 2", "Placeholder 2", 4, "Tests", 10, "b"),
-//            Habit(3, "Test 3", "Description 3", "Placeholder 3", 6, "Tests", 10, "c"),
-//            Habit(4, "Test 4", "Description 4", "Placeholder 4", 8, "Tests", 10, "d")
-//        )
+        val jsonData = fileHelper.readFromFile()
+        val sType = object: TypeToken<ArrayList<Habit>>() {}.type
+        var habitList: ArrayList<Habit> = ArrayList()
+        if (!jsonData.isEmpty()) {
+            Log.d("print_file_write", jsonData) // debug bntr
+            habitList = Gson().fromJson(jsonData, sType)
+            habitLD.value = habitList
+        } else habitLD.value = arrayListOf()
 
         habitLoadErrorLD.value = false
         loadingLD.value = false
     }
-    override fun onCleared() {
-        super.onCleared()
-        queue?.cancelAll(TAG)
+
+    fun updateList(updatedList: ArrayList<Habit>){
+        loadingLD.value = true
+        habitLoadErrorLD.value = false
+
+        updatedList.forEach { habit ->
+            if (habit.progress == habit.limit) {
+                habit.status = "Completed"
+            } else {
+                habit.status = "In Progress"
+            }
+        }
+
+        val newJson = Gson().toJson(updatedList)
+        Log.d("print_file_write", newJson)
+        fileHelper.writeToFile(newJson)
+
+        habitLD.value = updatedList
+        habitLoadErrorLD.value = false
+        loadingLD.value = false
     }
 }

@@ -8,6 +8,6 @@ class Habit(
     var progress: Int,
     var unit: String,
     var limit: Int,
-    var icon: String
+    var iconId: Int
 ) {
 }
