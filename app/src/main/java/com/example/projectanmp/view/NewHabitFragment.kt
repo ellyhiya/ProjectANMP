@@ -23,7 +23,6 @@ import com.google.gson.reflect.TypeToken
 
 class NewHabitFragment : Fragment() {
     private lateinit var binding: FragmentNewHabitBinding
-//    private lateinit var viewModel: DetailViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,13 +33,12 @@ class NewHabitFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //spinner setup
+        // setup spinner
         val items_display = arrayOf("Sport", "Study", "Gaming", "Me Time", "Creativity")
         val items_resource = arrayOf("icon_sport", "icon_book", "icon_gaming", "icon_me_time", "icon_palette")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, items_display)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerIcon.adapter = adapter
-
 
         // baca data yg sdh ada di json file (kalo ada)
         var current_id = 0
@@ -49,10 +47,10 @@ class NewHabitFragment : Fragment() {
         val type = object : TypeToken<ArrayList<Habit>>() {}.type
         var habitList: ArrayList<Habit> = ArrayList()
         if (!jsonData.isEmpty()) {
-            Log.d("print_file_write", jsonData) //debug bntr
+            Log.d("data_file_read", jsonData) //debug bntr
             habitList = Gson().fromJson(jsonData, type)
             current_id = habitList.size
-            Log.d("print_file_write", "ID sekarang: $current_id") //debug bntr
+            Log.d("data_file_last_id", "ID sekarang: $current_id") //debug bntr
         }
 
         binding.btnCreate.setOnClickListener {
@@ -85,6 +83,7 @@ class NewHabitFragment : Fragment() {
                         // save ke file dlm bntk json
                         val newJson = Gson().toJson(habitList)
                         fileHelper.writeToFile(newJson)
+                        Log.d("data_file_write_new", newJson)
                         Toast.makeText(requireContext(), "Habit created!", Toast.LENGTH_SHORT).show()
 
                         // pindah kembali ke dashboard
@@ -103,6 +102,8 @@ class NewHabitFragment : Fragment() {
                 val fileHelper = FileHelper(requireContext())
                 fileHelper.deleteFile()
                 dialog.dismiss()
+                val action = NewHabitFragmentDirections.actionDashboardFragmentFromHabit()
+                it.findNavController().navigate(action)
             }
             builder.setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()

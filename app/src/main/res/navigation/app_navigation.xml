@@ -11,7 +11,9 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/actionDashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            app:destination="@id/dashboardFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/dashboardFragment"
@@ -20,7 +22,9 @@
         tools:layout="@layout/fragment_dashboard" >
         <action
             android:id="@+id/actionNewHabitFragment"
-            app:destination="@id/newHabitFragment" />
+            app:destination="@id/newHabitFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/newHabitFragment"

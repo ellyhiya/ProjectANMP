@@ -29,7 +29,7 @@ class ListViewModel(application: Application):
         val sType = object: TypeToken<ArrayList<Habit>>() {}.type
         var habitList: ArrayList<Habit> = ArrayList()
         if (!jsonData.isEmpty()) {
-            Log.d("print_file_write", jsonData) // debug bntr
+            Log.d("data_file_read_refresh", jsonData)
             habitList = Gson().fromJson(jsonData, sType)
             habitLD.value = habitList
         } else habitLD.value = arrayListOf()

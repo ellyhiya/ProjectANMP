@@ -37,7 +37,7 @@ class DashboardFragment : Fragment() {
             it.findNavController().navigate(action)
         }
         viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
-//        viewModel.refresh()
+        viewModel.refresh()
 
         habitListAdapter = HabitListAdapter(arrayListOf(), viewModel)
         binding.recView.layoutManager = LinearLayoutManager(context)
@@ -56,6 +56,13 @@ class DashboardFragment : Fragment() {
     fun observeViewModel() {
         viewModel.habitLD.observe(viewLifecycleOwner, Observer {
             habitListAdapter.updateList(it)
+            if(habitListAdapter.habitList.isEmpty()){
+                binding.txtMessage.visibility = View.VISIBLE
+                binding.txtHelp.visibility = View.VISIBLE
+            } else {
+                binding.txtMessage.visibility = View.GONE
+                binding.txtHelp.visibility = View.GONE
+            }
         })
         viewModel.loadingLD.observe(viewLifecycleOwner, Observer {
             if (it == true) {
