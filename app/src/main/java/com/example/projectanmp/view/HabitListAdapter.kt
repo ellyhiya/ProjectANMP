@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectanmp.databinding.HabitCardBinding
 import com.example.projectanmp.model.Habit
@@ -33,55 +34,6 @@ class HabitListAdapter(val habitList:ArrayList<Habit>, val listener: HabitListBu
         Log.d("test", habitList[position].toString())
         holder.binding.habit = habitList[position]
         holder.binding.listener = this
-
-        // setup enable/disable button di awal
-//        checkStatus(holder, position)
-//        var progress_string = habitList[position].progress.toString() + "/" + habitList[position].target.toString() + " " + habitList[position].unit
-//        var percentage = (habitList[position].progress*100) / habitList[position].target
-//
-//        with(holder.binding){
-//            txtName.text = habitList[position].name
-//            txtHabitDesc.text = habitList[position].description
-//            chipStatus.text = habitList[position].status
-//            txtProgress.text = progress_string
-//            progressBar.progress = percentage
-//            imgIcon.setImageResource(habitList[position].iconId)
-
-//            btnAdd.setOnClickListener {
-//                habitList[position].progress += 1
-//                viewModel.updateList(ArrayList(habitList))
-//                checkStatus(holder, position)
-//            }
-//            btnSub.setOnClickListener {
-//                habitList[position].progress += -1
-//                viewModel.updateList(ArrayList(habitList))
-//                checkStatus(holder, position)
-//            }
-//        }
-    }
-
-    // buat ngecek tiap kali button diklik
-    fun checkStatus(holder: HabitViewHolder, position: Int){
-        with(holder.binding){
-            with(habitList[position]) {
-                if (progress == 0) {
-                    // blm mulai, buttonSub lock (ga boleh kurang)
-                    btnSub.isEnabled = false
-                } else if (progress == target) {
-                    // sdh selesai, button lock (ga boleh ganti)
-                    status = "Completed"
-                    chipStatus.text = status
-                    chipStatus.setChipBackgroundColorResource(android.R.color.holo_green_light)
-                    chipStatus.setTextColor(Color.WHITE)
-                    btnAdd.isEnabled = false
-                    btnSub.isEnabled = false
-                } else {
-                    // in progress, button bebas
-                    btnAdd.isEnabled = true
-                    btnSub.isEnabled = true
-                }
-            }
-        }
     }
 
     override fun getItemCount(): Int {
@@ -95,7 +47,9 @@ class HabitListAdapter(val habitList:ArrayList<Habit>, val listener: HabitListBu
     }
 
     override fun onTitleTextClick(view: View) {
-        TODO("Not yet implemented")
+        val idHabit = view.tag.toString().toInt()
+        val action = DashboardFragmentDirections.actionEditHabitFragment(idHabit)
+        Navigation.findNavController(view).navigate(action)
     }
 
     override fun onBtnAddClick(view: View) {
@@ -103,6 +57,7 @@ class HabitListAdapter(val habitList:ArrayList<Habit>, val listener: HabitListBu
         val idHabit = view.tag.toString().toInt()
         var selectedHabit = habitList.find({habit -> habit.id == idHabit})
         listener.onBtnAddPressed(selectedHabit!!)
+        notifyDataSetChanged()
     }
 
     override fun onBtnSubClick(view: View) {
@@ -110,5 +65,6 @@ class HabitListAdapter(val habitList:ArrayList<Habit>, val listener: HabitListBu
         val idHabit = view.tag.toString().toInt()
         var selectedHabit = habitList.find({habit -> habit.id == idHabit})
         listener.onBtnSubPressed(selectedHabit!!)
+        notifyDataSetChanged()
     }
 }

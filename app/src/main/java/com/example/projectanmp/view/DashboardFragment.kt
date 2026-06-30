@@ -78,11 +78,19 @@ class DashboardFragment : Fragment(), HabitListButtonsListener  {
 
     override fun onBtnAddPressed(habit: Habit) {
         habit.progress += 1
+        checkCompleted(habit)
         viewModel.updateHabit(habit)
     }
 
     override fun onBtnSubPressed(habit: Habit) {
         habit.progress -= 1
+        checkCompleted(habit)
         viewModel.updateHabit(habit)
+    }
+
+    fun checkCompleted(habit: Habit){
+        if (habit.progress == habit.target){
+            habit.status = "Completed"
+        } else habit.status = "In Progress"
     }
 }

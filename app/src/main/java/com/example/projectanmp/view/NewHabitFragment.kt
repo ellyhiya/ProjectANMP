@@ -30,7 +30,6 @@ class NewHabitFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnDel.visibility = View.GONE
         viewModel = ViewModelProvider(this)[DetailHabitViewModel::class.java]
 
         // setup spinner
@@ -72,23 +71,6 @@ class NewHabitFragment : Fragment() {
                     }
                 }
             }
-        }
-
-        binding.btnDel.setOnClickListener {
-//            val builder = AlertDialog.Builder(requireContext())
-//            builder.setTitle("Delete All Habits")
-//            builder.setMessage("Are you sure you want to delete all habits?")
-//            builder.setPositiveButton("Delete") { dialog, _ ->
-//                val fileHelper = FileHelper(requireContext())
-//                fileHelper.deleteFile()
-//                dialog.dismiss()
-//                val action = NewHabitFragmentDirections.actionDashboardFragmentFromHabit()
-//                it.findNavController().navigate(action)
-//            }
-//            builder.setNegativeButton("Cancel") { dialog, _ ->
-//                dialog.dismiss()
-//            }
-//            builder.create().show()
         }
     }
 }
