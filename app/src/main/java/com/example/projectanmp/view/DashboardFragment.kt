@@ -1,6 +1,5 @@
 package com.example.projectanmp.view
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,17 +9,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.projectanmp.R
-import com.example.projectanmp.databinding.ActivityMainBinding
 import com.example.projectanmp.databinding.FragmentDashboardBinding
-import com.example.projectanmp.databinding.FragmentLoginBinding
-import com.example.projectanmp.util.FileHelper
-import com.example.projectanmp.viewmodel.ListViewModel
+import com.example.projectanmp.model.Habit
+//import com.example.projectanmp.util.FileHelper
+import com.example.projectanmp.viewmodel.ListHabitViewModel
 
-class DashboardFragment : Fragment() {
-    private lateinit var viewModel: ListViewModel
+class DashboardFragment : Fragment(), HabitListButtonsListener  {
+    private lateinit var viewModel: ListHabitViewModel
     private lateinit var habitListAdapter: HabitListAdapter
     private lateinit var binding: FragmentDashboardBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,19 +29,18 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(ListHabitViewModel::class.java)
+        viewModel.refresh()
+        habitListAdapter = HabitListAdapter(arrayListOf(), this)
+        binding.recView.layoutManager = LinearLayoutManager(context)
+        binding.recView.adapter = habitListAdapter
+
+        observeViewModel()
 
         binding.fabNewHabit.setOnClickListener {
             val action = DashboardFragmentDirections.actionNewHabitFragment()
             it.findNavController().navigate(action)
         }
-        viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
-        viewModel.refresh()
-
-        habitListAdapter = HabitListAdapter(arrayListOf(), viewModel)
-        binding.recView.layoutManager = LinearLayoutManager(context)
-        binding.recView.adapter = habitListAdapter
-
-        observeViewModel()
 
         binding.refreshLayout.setOnRefreshListener {
             binding.recView.visibility = View.GONE
@@ -77,5 +74,15 @@ class DashboardFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.refresh()
+    }
+
+    override fun onBtnAddPressed(habit: Habit) {
+        habit.progress += 1
+        viewModel.updateHabit(habit)
+    }
+
+    override fun onBtnSubPressed(habit: Habit) {
+        habit.progress -= 1
+        viewModel.updateHabit(habit)
     }
 }

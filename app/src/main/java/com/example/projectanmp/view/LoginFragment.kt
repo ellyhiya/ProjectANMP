@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.projectanmp.databinding.FragmentLoginBinding
-import com.example.projectanmp.util.FileHelper
+//import com.example.projectanmp.util.FileHelper
 
 class LoginFragment : Fragment() {
 
@@ -26,7 +26,8 @@ class LoginFragment : Fragment() {
         binding.btnLogin.setOnClickListener {
             val username = binding.txtUsername.text.toString()
             val password = binding.txtPassword.text.toString()
-            if (username == "student" && password == "123") {
+//            if (username == "student" && password == "123") {
+            if (username == "" && password == "") {
 //                Toast.makeText(requireContext(),"Login Berhasil", Toast.LENGTH_SHORT).show()
                 val action = LoginFragmentDirections.actionDashboardFragment()
                 it.findNavController().navigate(action)
