@@ -54,12 +54,32 @@ class EditHabitFragment : Fragment(), Interfaces.EditHabitListeners {
         viewModel.habitLD.observe(viewLifecycleOwner, Observer {
             Log.d("test", it.toString())
             binding.habit = it
+            val position = when (it.iconId) {
+                R.drawable.icon_sport -> 0
+                R.drawable.icon_book -> 1
+                R.drawable.icon_gaming -> 2
+                R.drawable.icon_me_time -> 3
+                R.drawable.icon_palette -> 4
+                else -> 0
+            }
+
+            binding.spinnerIcon.setSelection(position)
+
             binding.listener = this
         })
     }
 
     override fun onBtnSubmitClick(view: View) {
+        binding.habit!!.iconId =
+            when (binding.spinnerIcon.selectedItemPosition) {
+                0 -> R.drawable.icon_sport
+                1 -> R.drawable.icon_book
+                2 -> R.drawable.icon_gaming
+                3 -> R.drawable.icon_me_time
+                else -> R.drawable.icon_palette
+            }
         viewModel.updateHabit(binding.habit!!)
+
         Toast.makeText(requireContext(), "Habit updated!", Toast.LENGTH_SHORT).show()
         // kembali ke dashboard
         Navigation.findNavController(view).popBackStack()

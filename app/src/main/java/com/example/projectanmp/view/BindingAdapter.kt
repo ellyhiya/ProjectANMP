@@ -15,6 +15,7 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.google.android.material.chip.Chip
+import com.google.android.material.textfield.TextInputEditText
 
 
 @BindingAdapter("imageResource")
@@ -64,28 +65,55 @@ fun disableSub(btn: Button, progress: Int, target: Int){
 }
 
 // ================ AI SECTION  =================
+//@BindingAdapter("android:text")
+//fun setText(view: EditText, value: Int?) {
+//    val newText = value?.toString() ?: ""
+//    if (view.text.toString() != newText) {
+//        view.setText(newText)
+//    }
+//}
+//
+//@InverseBindingAdapter(attribute = "android:text")
+//fun getText(view: EditText): Int {
+//    return view.text.toString().toIntOrNull() ?: 0
+//}
+//
+//@BindingAdapter("android:textAttrChanged")
+//fun setTextWatcher(view: EditText, attrChange: InverseBindingListener) {
+//    view.addTextChangedListener(object : TextWatcher {
+//        override fun afterTextChanged(s: Editable?) {
+//            attrChange.onChange()
+//        }
+//        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//    })
+//}
 @BindingAdapter("android:text")
-fun setText(view: EditText, value: Int?) {
-    val newText = value?.toString() ?: ""
-    if (view.text.toString() != newText) {
-        view.setText(newText)
+fun setIntText(view: TextInputEditText, value: Int) {
+    if (view.text.toString() != value.toString()) {
+        view.setText(value.toString())
     }
 }
 
 @InverseBindingAdapter(attribute = "android:text")
-fun getText(view: EditText): Int {
+fun getIntText(view: TextInputEditText): Int {
     return view.text.toString().toIntOrNull() ?: 0
 }
 
 @BindingAdapter("android:textAttrChanged")
-fun setTextWatcher(view: EditText, attrChange: InverseBindingListener) {
+fun setListener(
+    view: TextInputEditText,
+    listener: InverseBindingListener?
+) {
+    if (listener == null) return
+
     view.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            attrChange.onChange()
+            listener.onChange()
         }
+
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     })
 }
-
 // ================ AI SECTION  =================

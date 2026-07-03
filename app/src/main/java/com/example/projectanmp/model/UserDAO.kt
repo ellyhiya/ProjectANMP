@@ -29,4 +29,7 @@ interface UserDAO {
 
     @Delete
     fun deleteUser(user:User)
+
+    @Query("SELECT * FROM user WHERE username = :username AND password = :password LIMIT 1")
+    fun login(username: String, password: String): User?
 }
